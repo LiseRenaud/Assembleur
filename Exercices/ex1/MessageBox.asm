@@ -16,7 +16,7 @@ includelib c:\masm32\lib\msvcrt.lib
 
 .DATA
 ; variables initialisees
-titre     db    "Hello World : %d",10,0
+titre     db    "Hello World",10,0
 Message     db     "Bonjour en Français",10,0
 strCommand db "Pause",13,10,0
 
