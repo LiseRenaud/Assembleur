@@ -16,8 +16,8 @@ includelib c:\masm32\lib\msvcrt.lib
 
 .DATA
 ; variables initialisees
-chaine db "bonjour le monde", 0
-fmt    db "%s", 10, 0
+chaine db "bonjour le monde", 0 ; chaine a convertir en majuscules
+fmt    db "%s", 10, 0           ; format : chaine puis saut de ligne
 
 
 .DATA?
@@ -33,10 +33,10 @@ convert_loop:
     cmp al, 0           ; fin de chaîne ?
     je end_convert
 
-    cmp al, 'a'         ; si < 'a'
-    jb skip
-    cmp al, 'z'         ; si > 'z'
-    ja skip
+    cmp al, 'a'         ; si < 'a' dans la table ascii
+    jb skip             ; skip car pas minuscule
+    cmp al, 'z'         ; si > 'z' dans la table ascii
+    ja skip             ; skip car pas minuscule
 
     sub al, 32          ; conversion en majuscule
     mov [esi], al       ; écrire le caractère modifié
@@ -46,17 +46,17 @@ skip:
     jmp convert_loop
 
 end_convert:
-    ret
+    ret             ; retour à l'appelant
 UpperCase ENDP
 
 start:
-    lea eax, chaine
-    call UpperCase
+    lea eax, chaine     ; eax adresse chaine a convertir
+    call UpperCase      ; conversion
 
-    push offset chaine
-    push offset fmt
-    call crt_printf
+    push offset chaine  ; 2e arg de printf : chaine à afficher
+    push offset fmt     ; 1e arg de printf : format "%s\n"
+    call crt_printf     ; affichage
 
-    push 0
-    call ExitProcess
-end start
+    push 0              ; code retour 0
+    call ExitProcess    ; fin processus
+end start               ; début du programme
